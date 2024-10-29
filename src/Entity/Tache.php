@@ -5,8 +5,10 @@ namespace App\Entity;
 use App\Repository\TacheRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TacheRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Tache
 {
     #[ORM\Id]
@@ -15,21 +17,27 @@ class Tache
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le nom est obligatoire.")]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "La description est obligatoire.")]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "La catégorie est obligatoire.")]
     private ?string $categorie = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $statut = null;
+    #[Assert\Choice(choices: ['a_faire', 'en_cours', 'termine'], message: "Le statut est invalide.")]
+    private ?string $statut = 'a_faire';
 
     #[ORM\Column(length: 255)]
-    private ?string $priorite = null;
+    #[Assert\Choice(choices: ['basse', 'moyenne', 'haute'], message: "La priorité est invalide.")]
+    private ?string $priorite = 'moyenne';
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Assert\NotBlank(message: "La date limite est obligatoire.")]
     private ?\DateTimeInterface $maxDate = null;
 
     #[ORM\Column]
@@ -37,6 +45,20 @@ class Tache
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $updatedAt = null;
+
+    public function __construct()
+    {
+        $this->statut = 'a_faire';
+        $this->priorite = 'moyenne';
+        $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTime();
+    }
+
+    #[ORM\PreUpdate]
+    public function updateTimestamp(): void
+    {
+        $this->updatedAt = new \DateTime();
+    }
 
     public function getId(): ?int
     {
@@ -51,7 +73,6 @@ class Tache
     public function setName(string $name): static
     {
         $this->name = $name;
-
         return $this;
     }
 
@@ -63,7 +84,6 @@ class Tache
     public function setDescription(string $description): static
     {
         $this->description = $description;
-
         return $this;
     }
 
@@ -75,7 +95,6 @@ class Tache
     public function setCategorie(string $categorie): static
     {
         $this->categorie = $categorie;
-
         return $this;
     }
 
@@ -87,7 +106,6 @@ class Tache
     public function setStatut(string $statut): static
     {
         $this->statut = $statut;
-
         return $this;
     }
 
@@ -99,7 +117,6 @@ class Tache
     public function setPriorite(string $priorite): static
     {
         $this->priorite = $priorite;
-
         return $this;
     }
 
@@ -111,7 +128,6 @@ class Tache
     public function setMaxDate(\DateTimeInterface $maxDate): static
     {
         $this->maxDate = $maxDate;
-
         return $this;
     }
 
@@ -123,7 +139,6 @@ class Tache
     public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
-
         return $this;
     }
 
@@ -135,7 +150,6 @@ class Tache
     public function setUpdatedAt(\DateTimeInterface $updatedAt): static
     {
         $this->updatedAt = $updatedAt;
-
         return $this;
     }
 }

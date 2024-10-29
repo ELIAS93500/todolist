@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier la tâche{% endblock %}
+
+{% block body %}
+    <h1>Modifier la tâche</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button type="submit" class="btn btn-primary">Mettre à jour la tâche</button>
+    {{ form_end(form) }}
+
+    <a href="{{ path('app_tache') }}" class="btn btn-secondary">Retour à la liste des tâches</a>
+{% endblock %}
