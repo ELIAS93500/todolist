@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Tâches{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1>Liste des Tâches</h1>
+
+        <p>Cliquez <a href="{{ path('app_tache_new') }}">ici</a> pour créer une nouvelle tâche.</p>
+
+        <table class="table table-bordered">
+            <thead class="thead-light">
+                <tr>
+                    <th>Nom</th>
+                    <th>Description</th>
+                    <th>Catégorie</th>
+                    <th>Statut</th>
+                    <th>Priorité</th>
+                    <th>Date Limite</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for tache in taches %}
+                    <tr>
+                        <td>{{ tache.name }}</td>
+                        <td>{{ tache.description }}</td>
+                        <td>{{ tache.categorie }}</td>
+                        <td>{{ tache.statut }}</td>
+                        <td>{{ tache.priorite }}</td>
+                        <td>{{ tache.maxDate ? tache.maxDate|date('Y-m-d H:i') : 'Pas de date' }}</td>
+                        <td>
+                            <a href="{{ path('app_tache_edit', {'id': tache.id}) }}" class="btn btn-warning btn-sm">Modifier</a>
+                            
+                            <form action="{{ path('app_tache_delete', {'id': tache.id}) }}" method="post" style="display:inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette tâche ?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ tache.id) }}">
+                                <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="7">Aucune tâche trouvée.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
