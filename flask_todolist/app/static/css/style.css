@@ -1,0 +1,227 @@
+/* Body général */
+body {
+    font-family: "Nunito", sans-serif;
+    background-color: #121212;
+    color: #f5f5f5;
+    margin: 0;
+}
+
+/* Sidebar */
+.sidebar {
+    background-color: #1c1c2e;
+    width: 220px;
+    height: 100vh;
+    position: fixed;
+    padding-top: 30px;
+    transition: width 0.3s;
+}
+
+.sidebar.collapsed {
+    width: 60px;
+}
+
+/* Logo / Header Sidebar */
+.sidebar-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #ff6f91;
+    margin-bottom: 40px;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.logo-icon {
+    background: #f5365c;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    transition: transform 0.3s;
+}
+
+.logo-icon i {
+    color: #fff;
+    font-size: 1.2rem;
+}
+
+.sidebar-logo:hover .logo-icon {
+    transform: rotate(15deg) scale(1.1);
+}
+
+.sidebar-logo .logo-text {
+    transition: opacity 0.3s;
+}
+
+/* Cacher texte quand sidebar réduite */
+.sidebar.collapsed .logo-text {
+    display: none;
+}
+
+/* Sidebar menu */
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    padding: 12px 20px;
+}
+
+.sidebar ul li a {
+    color: #f5f5f5;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    transition: background 0.2s;
+}
+
+.sidebar ul li a:hover {
+    background-color: #f5365c;
+    color: #fff;
+}
+
+.sidebar ul li a i {
+    min-width: 20px;
+    text-align: center;
+}
+
+.sidebar ul li a span {
+    margin-left: 10px;
+}
+
+/* Cacher texte quand sidebar réduite */
+.sidebar.collapsed ul li a span {
+    display: none;
+}
+
+/* Main panel */
+.main-panel {
+    margin-left: 220px;
+    padding: 20px;
+    transition: margin-left 0.3s;
+}
+
+.main-panel.expanded {
+    margin-left: 60px;
+}
+
+/* Navbar */
+.navbar {
+    background-color: #1a1a2e;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #2d2d44;
+    border-radius: 10px;
+}
+
+.navbar h4 {
+    color: #f5f5f5;
+    margin: 0;
+}
+
+/* Cartes */
+.card {
+    background-color: #1f1f2e;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    color: #f5f5f5;
+    transition: all 0.3s;
+}
+
+.card h5 {
+    color: #ff6f91;
+}
+
+.card p {
+    color: #ccc;
+}
+
+/* Statut des tâches */
+.task-validated {
+    opacity: 0.6;
+    text-decoration: line-through;
+}
+
+.task-pending {
+    border: 2px dashed #ffbc42;
+}
+
+/* Boutons */
+.btn-primary {
+    background-color: #f5365c;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+}
+
+.btn-primary:hover {
+    background-color: #ff708f;
+}
+
+.btn-danger {
+    background-color: #fb6340;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+}
+
+.btn-danger:hover {
+    background-color: #ff7a57;
+}
+
+.btn-success {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+}
+
+.btn-success:hover {
+    background-color: #4cd964;
+}
+
+.btn-warning {
+    background-color: #ffc107;
+    color: #212529;
+    border: none;
+    border-radius: 12px;
+}
+
+.btn-warning:hover {
+    background-color: #ffd658;
+}
+
+/* Formulaires */
+form input, form select {
+    border-radius: 10px;
+    border: none;
+    padding: 10px;
+    background-color: #1f1f2e;
+    color: #f5f5f5;
+}
+
+form input::placeholder {
+    color: #ccc;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 60px;
+    }
+    .main-panel {
+        margin-left: 60px;
+    }
+}

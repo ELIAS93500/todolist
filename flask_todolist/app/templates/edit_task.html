@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block page_title %}Modifier Tâche{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Modifier la tâche</h2>
+
+<form action="" method="POST">
+    <div class="mb-3">
+        <input type="text" name="title" value="{{ task.title }}" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <input type="text" name="description" value="{{ task.description }}" class="form-control">
+    </div>
+    <div class="mb-3">
+        <input type="date" name="deadline" value="{{ task.deadline.strftime('%Y-%m-%d') if task.deadline else '' }}" class="form-control">
+    </div>
+    <div class="mb-3">
+        <select name="priority" class="form-control">
+            <option value="Faible" {% if task.priority=='Faible' %}selected{% endif %}>Faible</option>
+            <option value="Moyenne" {% if task.priority=='Moyenne' %}selected{% endif %}>Moyenne</option>
+            <option value="Haute" {% if task.priority=='Haute' %}selected{% endif %}>Haute</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Enregistrer</button>
+</form>
+{% endblock %}

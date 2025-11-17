@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="row">
+    {% for task in tasks %}
+    <div class="col-md-4">
+        <div class="card">
+            <h5>{{ task.title }}</h5>
+            <p>{{ task.description }}</p>
+            <p><strong>Deadline:</strong> {{ task.deadline.strftime('%d/%m/%Y') if task.deadline else 'Aucune' }}</p>
+            <p><strong>Priorité:</strong> {{ task.priority }}</p>
+        </div>
+    </div>
+    {% else %}
+    <p>Aucune tâche pour le moment.</p>
+    {% endfor %}
+</div>
+{% endblock %}

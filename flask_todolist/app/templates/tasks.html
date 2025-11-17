@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block page_title %}Tâches{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Gestion des tâches</h2>
+
+<div class="row">
+    {% for task in tasks %}
+    <div class="col-md-4">
+        <div class="card {% if task.status == 'validée' %}task-validated{% elif task.status == 'en attente' %}task-pending{% endif %}">
+            <h5>{{ task.title }}</h5>
+            <p>{{ task.description }}</p>
+            <p><strong>Deadline:</strong> {{ task.deadline.strftime('%d/%m/%Y') if task.deadline else 'Aucune' }}</p>
+            <p><strong>Priorité:</strong> {{ task.priority }}</p>
+            <p><strong>Créée le:</strong> {{ task.created_at.strftime('%d/%m/%Y') }}</p>
+            <div class="d-flex gap-2">
+                <a href="{{ url_for('main.validate_task', id=task.id) }}" class="btn btn-success btn-sm">Valider</a>
+                <a href="{{ url_for('main.delete_task', id=task.id) }}" class="btn btn-danger btn-sm">Supprimer</a>
+                <a href="{{ url_for('main.pending_task', id=task.id) }}" class="btn btn-warning btn-sm">En attente</a>
+                <a href="{{ url_for('main.edit_task', id=task.id) }}" class="btn btn-info btn-sm">Modifier</a>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <p>Aucune tâche pour le moment.</p>
+    {% endfor %}
+</div>
+
+<hr>
+
+<h3>Ajouter une tâche</h3>
+<form action="{{ url_for('main.add_task') }}" method="POST">
+    <div class="mb-3">
+        <input type="text" name="title" placeholder="Titre" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <input type="text" name="description" placeholder="Description" class="form-control">
+    </div>
+    <div class="mb-3">
+        <input type="date" name="deadline" class="form-control">
+    </div>
+    <div class="mb-3">
+        <select name="priority" class="form-control">
+            <option value="Faible">Faible</option>
+            <option value="Moyenne">Moyenne</option>
+            <option value="Haute">Haute</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Ajouter</button>
+</form>
+{% endblock %}
