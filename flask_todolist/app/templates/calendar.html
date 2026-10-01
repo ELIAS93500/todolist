@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="calendar-wrapper">
+    <div class="calendar-card-container">
+        <div id="calendar"></div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'timeGridWeek',
+        locale: 'fr',
+        firstDay: 1, // Lundi en premier
+        allDaySlot: true,
+        allDayText: 'Toute la journée',
+        slotMinTime: '07:00:00', // Démarre la journée à 7h plutôt qu'à minuit pour un affichage pro
+        slotMaxTime: '21:00:00',
+        expandRows: true,
+        nowIndicator: true,
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+        },
+        buttonText: {
+            today: "Aujourd'hui",
+            month: "Mois",
+            week: "Semaine",
+            day: "Jour"
+        },
+        events: '/api/tasks-events',
+        eventClick: function(info) {
+            if (info.event.id) {
+                window.location.href = '/edit_task/' + info.event.id;
+            }
+        }
+    });
+    calendar.render();
+});
+</script>
+{% endblock %}

@@ -1,20 +1,102 @@
 {% extends "base.html" %}
 
-{% block page_title %}Dashboard{% endblock %}
-
 {% block content %}
-<div class="row">
-    {% for task in tasks %}
-    <div class="col-md-4">
-        <div class="card">
-            <h5>{{ task.title }}</h5>
-            <p>{{ task.description }}</p>
-            <p><strong>Deadline:</strong> {{ task.deadline.strftime('%d/%m/%Y') if task.deadline else 'Aucune' }}</p>
-            <p><strong>Priorité:</strong> {{ task.priority }}</p>
+<div class="board-container">
+    <!-- COLONNE 1 : À FAIRE -->
+    <div class="kanban-col">
+        <div class="kanban-header">
+            <span class="col-name">
+                À Faire 
+                <span class="col-count">{{ pending_tasks|length }}</span>
+            </span>
+        </div>
+
+        <div class="cards-stack">
+            {% for task in pending_tasks %}
+            <div class="asana-card">
+                <div class="card-top">
+                    <a href="{{ url_for('main.validate_task', id=task.id) }}" class="circle-check" title="Valider la tâche">
+                        <i class="fas fa-check" style="font-size: 11px;"></i>
+                    </a>
+                    <h4 class="card-title">{{ task.title }}</h4>
+                </div>
+
+                {% if task.description %}
+                <p class="card-desc">{{ task.description }}</p>
+                {% endif %}
+
+                <div class="card-tags">
+                    <span class="tag-pill {{ task.priority }}">{{ task.priority }} priorité</span>
+                </div>
+
+                <div class="card-footer">
+                    <div class="footer-meta">
+                        <div class="user-thumb">ED</div>
+                        <span><i class="far fa-calendar-alt me-1"></i>{{ task.deadline.strftime('%d %b %Y') if task.deadline else 'Aucune échéance' }}</span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="{{ url_for('main.edit_task', id=task.id) }}" class="btn-action-icon" title="Modifier">
+                            <i class="fas fa-pen"></i>
+                        </a>
+                        <a href="{{ url_for('main.delete_task', id=task.id) }}" class="btn-action-icon danger" title="Supprimer" onclick="return confirm('Confirmer la suppression de cette tâche ?');">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="text-center p-4 bg-white border rounded-3 text-muted small">
+                Aucune tâche à faire pour le moment.
+            </div>
+            {% endfor %}
         </div>
     </div>
-    {% else %}
-    <p>Aucune tâche pour le moment.</p>
-    {% endfor %}
+
+    <!-- COLONNE 2 : VALIDÉES / TERMINÉES -->
+    <div class="kanban-col">
+        <div class="kanban-header">
+            <span class="col-name">
+                Complétées
+                <span class="col-count" style="background: #dcfce7; color: #166534;">{{ completed_tasks|length }}</span>
+            </span>
+        </div>
+
+        <div class="cards-stack">
+            {% for task in completed_tasks %}
+            <div class="asana-card is-done">
+                <div class="card-top">
+                    <a href="{{ url_for('main.pending_task', id=task.id) }}" class="circle-check" title="Remettre en attente">
+                        <i class="fas fa-check" style="font-size: 11px;"></i>
+                    </a>
+                    <h4 class="card-title">{{ task.title }}</h4>
+                </div>
+
+                {% if task.description %}
+                <p class="card-desc">{{ task.description }}</p>
+                {% endif %}
+
+                <div class="card-tags">
+                    <span class="tag-pill {{ task.priority }}">{{ task.priority }} priorité</span>
+                </div>
+
+                <div class="card-footer">
+                    <div class="footer-meta">
+                        <div class="user-thumb" style="background: #10b981; color: white;">✓</div>
+                        <span>Terminé</span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="{{ url_for('main.delete_task', id=task.id) }}" class="btn-action-icon danger" title="Supprimer" onclick="return confirm('Supprimer définitivement ?');">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="text-center p-4 bg-white border rounded-3 text-muted small">
+                Aucune tâche complétée pour l'instant.
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 </div>
 {% endblock %}

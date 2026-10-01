@@ -1,52 +1,125 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{% block title %}Todolist{% endblock %}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}EliasToDoList - Workspace{% endblock %}</title>
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Bootstrap 5 & FontAwesome -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- FullCalendar + Traduction FR -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.css">
+    
+    <!-- CSS Dédié -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <!-- Scripts Chart.js et FullCalendar -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.10/locales-all.global.min.js"></script>
 </head>
 <body>
 
-<div class="sidebar">
-    <a href="{{ url_for('main.dashboard') }}" class="sidebar-logo">
-        <div class="logo-icon">
-            <i class="fas fa-rocket"></i>
+<header class="asana-topbar">
+    <div class="topbar-header">
+        <div class="brand-wrapper">
+            <div class="asana-icon">
+                <i class="fas fa-check"></i>
+            </div>
+            <span class="workspace-title">Elias ToDoList</span>
         </div>
-        <span class="logo-text">EliasCorp</span>
-    </a>
-    <ul>
-        <li>
-            <a href="{{ url_for('main.dashboard') }}">
-                <i class="fas fa-tachometer-alt"></i>
-                <span>Dashboard</span>
-            </a>
-        </li>
-        <li>
-            <a href="{{ url_for('main.tasks_page') }}">
-                <i class="fas fa-tasks"></i>
-                <span>Tâches</span>
-            </a>
-        </li>
+
+        <div class="topbar-tools">
+            <div class="search-input-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Rechercher une tâche...">
+            </div>
+            
+            <button class="btn-saas-add" data-bs-toggle="modal" data-bs-target="#addTaskModal">
+                <i class="fas fa-plus"></i> Nouvelle tâche
+            </button>
+
+            <div class="avatar-badge" title="Connecté : Elias">ED</div>
+        </div>
+    </div>
+
+    <!-- Onglets Asana -->
+    <ul class="asana-nav-tabs">
+        <li><a href="{{ url_for('main.overview') }}" class="{% if request.endpoint == 'main.overview' %}active{% endif %}">Aperçu</a></li>
+        <li><a href="{{ url_for('main.tasks_page') }}" class="{% if request.endpoint == 'main.tasks_page' %}active{% endif %}">Liste</a></li>
+        <li><a href="{{ url_for('main.board') }}" class="{% if request.endpoint in ['main.board', 'main.dashboard'] %}active{% endif %}">Tableau (Board)</a></li>
+        <li><a href="{{ url_for('main.timeline') }}" class="{% if request.endpoint == 'main.timeline' %}active{% endif %}">Chronologie</a></li>
+        <li><a href="{{ url_for('main.calendar_view') }}" class="{% if request.endpoint == 'main.calendar_view' %}active{% endif %}">Calendrier</a></li>
+        <li><a href="{{ url_for('main.analytics_dashboard') }}" class="{% if request.endpoint == 'main.analytics_dashboard' %}active{% endif %}">Tableau de bord</a></li>
+        <li><a href="{{ url_for('main.workflow') }}" class="{% if request.endpoint == 'main.workflow' %}active{% endif %}">Automatisations</a></li>
     </ul>
-</div>
+</header>
 
+<main class="asana-main-content">
+    {% block content %}{% endblock %}
+</main>
 
-<div class="main-panel">
-    <nav class="navbar mb-4">
-        <h4>{% block page_title %}Tableau de bord{% endblock %}</h4>
-        <button id="sidebarToggle" class="btn btn-light"><i class="fas fa-bars"></i></button>
-    </nav>
+<!-- Modale de Création avec Horaires -->
+<div class="modal fade" id="addTaskModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 14px;">
+            <form action="{{ url_for('main.add_task') }}" method="POST">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold">Planifier une tâche</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body py-3">
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold text-secondary">Titre de la tâche *</label>
+                        <input type="text" name="title" class="form-control" placeholder="Ex : Réunion d'équipe technique..." required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold text-secondary">Description</label>
+                        <textarea name="description" class="form-control" rows="2" placeholder="Objectifs de la tâche..."></textarea>
+                    </div>
 
-    <div class="content">
-        {% block content %}{% endblock %}
+                    <div class="row g-2 mb-3">
+                        <div class="col-12">
+                            <label class="form-label small fw-semibold text-secondary">Date du jour</label>
+                            <input type="date" name="deadline" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <!-- Plage horaire de réalisation -->
+                    <div class="row g-2 mb-3 p-2 rounded bg-light border">
+                        <div class="col-6">
+                            <label class="form-label small fw-bold text-dark"><i class="far fa-clock me-1"></i>De (Début)</label>
+                            <input type="time" name="start_time" class="form-control" placeholder="09:00">
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label small fw-bold text-dark"><i class="fas fa-hourglass-end me-1"></i>À (Fin)</label>
+                            <input type="time" name="end_time" class="form-control" placeholder="10:30">
+                        </div>
+                        <div class="col-12">
+                            <span class="text-muted" style="font-size: 0.75rem;">* Laissez vide pour classer la tâche dans « Toute la journée ».</span>
+                        </div>
+                    </div>
+
+                    <div class="mb-2">
+                        <label class="form-label small fw-semibold text-secondary">Niveau de priorité</label>
+                        <select name="priority" class="form-select">
+                            <option value="Haute">Haute priorité</option>
+                            <option value="Moyenne" selected>Priorité moyenne</option>
+                            <option value="Faible">Basse priorité</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn-saas-add">Créer & Planifier</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>

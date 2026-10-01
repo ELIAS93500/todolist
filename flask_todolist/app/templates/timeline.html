@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="timeline-container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h5 class="fw-bold mb-1"><i class="fas fa-stream me-2 text-primary"></i>Chronologie du Sprint</h5>
+            <p class="text-secondary small mb-0">Planification des livrables et jalons critiques</p>
+        </div>
+        <span class="badge bg-light text-dark border px-3 py-2">Cycle en cours</span>
+    </div>
+
+    <div class="border rounded-3 p-3 bg-white shadow-sm">
+        {% for task in tasks %}
+        <div class="timeline-row">
+            <div class="timeline-label">
+                <span class="tag-pill {{ task.priority }} me-2" style="font-size: 11px;">{{ task.priority }}</span>
+                {{ task.title }}
+            </div>
+            <div class="timeline-bar-wrapper">
+                <div class="gantt-bar" style="margin-left: {{ loop.index * 5 }}%; width: {{ 140 + (loop.index * 25) }}px; background: {% if task.priority == 'Haute' %}#ef4444{% elif task.priority == 'Moyenne' %}#f97316{% else %}#2563eb{% endif %};">
+                    {{ task.deadline.strftime('%d %b') }}
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <p class="text-muted p-4 text-center">Aucune tâche avec date limite pour afficher la chronologie.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

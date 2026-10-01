@@ -1,27 +1,63 @@
 {% extends "base.html" %}
 
-{% block page_title %}Modifier Tâche{% endblock %}
-
 {% block content %}
-<h2 class="mb-4">Modifier la tâche</h2>
+<div class="container py-4">
+    <div class="card shadow-sm border-0 mx-auto" style="max-width: 650px; border-radius: 14px;">
+        <div class="card-body p-4">
+            <h5 class="fw-bold mb-4"><i class="fas fa-pen-to-square me-2 text-primary"></i>Modifier la tâche #{{ task.id }}</h5>
+            
+            <form action="" method="POST">
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold text-secondary">Titre de la tâche</label>
+                    <input type="text" name="title" value="{{ task.title }}" class="form-control" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold text-secondary">Description</label>
+                    <textarea name="description" class="form-control" rows="3">{{ task.description or '' }}</textarea>
+                </div>
 
-<form action="" method="POST">
-    <div class="mb-3">
-        <input type="text" name="title" value="{{ task.title }}" class="form-control" required>
+                <div class="row g-2 mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label small fw-semibold text-secondary">Date d'échéance</label>
+                        <input type="date" name="deadline" value="{{ task.deadline.strftime('%Y-%m-%d') if task.deadline else '' }}" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small fw-semibold text-secondary">Priorité</label>
+                        <select name="priority" class="form-select">
+                            <option value="Faible" {% if task.priority == 'Faible' %}selected{% endif %}>Basse priorité</option>
+                            <option value="Moyenne" {% if task.priority == 'Moyenne' %}selected{% endif %}>Priorité moyenne</option>
+                            <option value="Haute" {% if task.priority == 'Haute' %}selected{% endif %}>Haute priorité</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Plage horaire (Début & Fin) -->
+                <div class="p-3 mb-4 rounded bg-light border">
+                    <label class="form-label small fw-bold text-dark mb-2">
+                        <i class="far fa-clock me-1 text-primary"></i>Plage horaire (Optionnel)
+                    </label>
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <label class="form-label small text-secondary">De (Heure de début)</label>
+                            <input type="time" name="start_time" value="{{ task.start_time or '' }}" class="form-control">
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label small text-secondary">À (Heure de fin)</label>
+                            <input type="time" name="end_time" value="{{ task.end_time or '' }}" class="form-control">
+                        </div>
+                    </div>
+                    <span class="text-muted d-block mt-2" style="font-size: 0.75rem;">
+                        * Laissez vide pour classer la tâche dans « Toute la journée » sur le calendrier.
+                    </span>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center pt-2">
+                    <a href="{{ url_for('main.board') }}" class="btn btn-light">Annuler</a>
+                    <button type="submit" class="btn-saas-add">Enregistrer les modifications</button>
+                </div>
+            </form>
+        </div>
     </div>
-    <div class="mb-3">
-        <input type="text" name="description" value="{{ task.description }}" class="form-control">
-    </div>
-    <div class="mb-3">
-        <input type="date" name="deadline" value="{{ task.deadline.strftime('%Y-%m-%d') if task.deadline else '' }}" class="form-control">
-    </div>
-    <div class="mb-3">
-        <select name="priority" class="form-control">
-            <option value="Faible" {% if task.priority=='Faible' %}selected{% endif %}>Faible</option>
-            <option value="Moyenne" {% if task.priority=='Moyenne' %}selected{% endif %}>Moyenne</option>
-            <option value="Haute" {% if task.priority=='Haute' %}selected{% endif %}>Haute</option>
-        </select>
-    </div>
-    <button type="submit" class="btn btn-primary">Enregistrer</button>
-</form>
+</div>
 {% endblock %}

@@ -1,52 +1,65 @@
 {% extends "base.html" %}
 
-{% block page_title %}Tâches{% endblock %}
-
 {% block content %}
-<h2 class="mb-4">Gestion des tâches</h2>
-
-<div class="row">
-    {% for task in tasks %}
-    <div class="col-md-4">
-        <div class="card {% if task.status == 'validée' %}task-validated{% elif task.status == 'en attente' %}task-pending{% endif %}">
-            <h5>{{ task.title }}</h5>
-            <p>{{ task.description }}</p>
-            <p><strong>Deadline:</strong> {{ task.deadline.strftime('%d/%m/%Y') if task.deadline else 'Aucune' }}</p>
-            <p><strong>Priorité:</strong> {{ task.priority }}</p>
-            <p><strong>Créée le:</strong> {{ task.created_at.strftime('%d/%m/%Y') }}</p>
-            <div class="d-flex gap-2">
-                <a href="{{ url_for('main.validate_task', id=task.id) }}" class="btn btn-success btn-sm">Valider</a>
-                <a href="{{ url_for('main.delete_task', id=task.id) }}" class="btn btn-danger btn-sm">Supprimer</a>
-                <a href="{{ url_for('main.pending_task', id=task.id) }}" class="btn btn-warning btn-sm">En attente</a>
-                <a href="{{ url_for('main.edit_task', id=task.id) }}" class="btn btn-info btn-sm">Modifier</a>
-            </div>
-        </div>
+<div class="container-fluid py-4 px-4 overflow-auto">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="fw-bold mb-0">Toutes les tâches ({{ tasks|length }})</h4>
+        <button class="btn-saas-add" data-bs-toggle="modal" data-bs-target="#addTaskModal">
+            <i class="fas fa-plus"></i> Ajouter une tâche
+        </button>
     </div>
-    {% else %}
-    <p>Aucune tâche pour le moment.</p>
-    {% endfor %}
+
+    <div class="bg-white border rounded-3 shadow-sm overflow-hidden">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr style="font-size: 0.85rem; color: #475569;">
+                    <th style="width: 44px;"></th>
+                    <th>Titre</th>
+                    <th>Description</th>
+                    <th>Échéance</th>
+                    <th>Priorité</th>
+                    <th>Statut</th>
+                    <th class="text-end" style="padding-right: 20px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in tasks %}
+                <tr>
+                    <td>
+                        <a href="{{ url_for('main.validate_task', id=task.id) if task.status != 'validée' else url_for('main.pending_task', id=task.id) }}" 
+                           class="circle-check {% if task.status == 'validée' %}text-success{% endif %}">
+                            <i class="fas fa-check" style="font-size: 10px;"></i>
+                        </a>
+                    </td>
+                    <td class="fw-semibold {% if task.status == 'validée' %}text-decoration-line-through text-muted{% endif %}">
+                        {{ task.title }}
+                    </td>
+                    <td class="text-secondary small">{{ task.description or '-' }}</td>
+                    <td class="small">{{ task.deadline.strftime('%d/%m/%Y') if task.deadline else '-' }}</td>
+                    <td>
+                        <span class="tag-pill {{ task.priority }}">{{ task.priority }}</span>
+                    </td>
+                    <td>
+                        <span class="badge {% if task.status == 'validée' %}bg-success{% else %}bg-warning text-dark{% endif %}">
+                            {{ task.status }}
+                        </span>
+                    </td>
+                    <td class="text-end" style="padding-right: 20px;">
+                        <a href="{{ url_for('main.edit_task', id=task.id) }}" class="btn-action-icon me-1" title="Modifier">
+                            <i class="fas fa-pen"></i>
+                        </a>
+                        <a href="{{ url_for('main.delete_task', id=task.id) }}" class="btn-action-icon danger" title="Supprimer" onclick="return confirm('Confirmer la suppression ?');">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="7" class="text-center py-4 text-muted">Aucune tâche enregistrée.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
-
-<hr>
-
-<h3>Ajouter une tâche</h3>
-<form action="{{ url_for('main.add_task') }}" method="POST">
-    <div class="mb-3">
-        <input type="text" name="title" placeholder="Titre" class="form-control" required>
-    </div>
-    <div class="mb-3">
-        <input type="text" name="description" placeholder="Description" class="form-control">
-    </div>
-    <div class="mb-3">
-        <input type="date" name="deadline" class="form-control">
-    </div>
-    <div class="mb-3">
-        <select name="priority" class="form-control">
-            <option value="Faible">Faible</option>
-            <option value="Moyenne">Moyenne</option>
-            <option value="Haute">Haute</option>
-        </select>
-    </div>
-    <button type="submit" class="btn btn-primary">Ajouter</button>
-</form>
 {% endblock %}

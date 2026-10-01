@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="workflow-container">
+    <h5 class="fw-bold mb-4 text-center">Automatisations & Règles Métier</h5>
+    
+    <div class="workflow-card">
+        <div class="d-flex align-items-center gap-3">
+            <div class="p-3 bg-primary text-white rounded-3"><i class="fas fa-bolt"></i></div>
+            <div>
+                <h6 class="fw-bold mb-1">Règle 1 : Archivage automatique</h6>
+                <p class="text-secondary small mb-0">Lorsqu'une tâche est marquée <strong>complétée</strong>, elle est automatiquement consolidée dans les métriques de fin de sprint.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="workflow-card">
+        <div class="d-flex align-items-center gap-3">
+            <div class="p-3 bg-danger text-white rounded-3"><i class="fas fa-bell"></i></div>
+            <div>
+                <h6 class="fw-bold mb-1">Règle 2 : Alerte d'échéance</h6>
+                <p class="text-secondary small mb-0">Toute tâche avec une échéance inférieure à 24 heures est automatiquement mise en avant dans le calendrier et le tableau de bord.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,227 +1,637 @@
-/* Body général */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg-workspace: #f8fafc;
+  --bg-surface: #ffffff;
+  --border-subtle: #e2e8f0;
+  --border-card: #e5e7eb;
+  
+  --text-main: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+
+  --p-high-bg: #fee2e2;
+  --p-high-text: #b91c1c;
+  --p-med-bg: #ffedd5;
+  --p-med-text: #c2410c;
+  --p-low-bg: #f1f5f9;
+  --p-low-text: #334155;
+}
+
+* { box-sizing: border-box; }
+
 body {
-    font-family: "Nunito", sans-serif;
-    background-color: #121212;
-    color: #f5f5f5;
-    margin: 0;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--bg-workspace);
+  color: var(--text-main);
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
-/* Sidebar */
-.sidebar {
-    background-color: #1c1c2e;
-    width: 220px;
-    height: 100vh;
-    position: fixed;
-    padding-top: 30px;
-    transition: width 0.3s;
+/* En-tête Asana */
+.asana-topbar {
+  background: #ffffff;
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 14px 28px 0 28px;
+  flex-shrink: 0;
 }
 
-.sidebar.collapsed {
-    width: 60px;
+.topbar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
 }
 
-/* Logo / Header Sidebar */
-.sidebar-logo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: #ff6f91;
-    margin-bottom: 40px;
-    text-decoration: none;
-    transition: all 0.3s;
+.brand-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-.logo-icon {
-    background: #f5365c;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-    transition: transform 0.3s;
+.asana-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 15px;
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
 }
 
-.logo-icon i {
-    color: #fff;
-    font-size: 1.2rem;
+.workspace-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
-.sidebar-logo:hover .logo-icon {
-    transform: rotate(15deg) scale(1.1);
+.topbar-tools {
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
 
-.sidebar-logo .logo-text {
-    transition: opacity 0.3s;
+.search-input-box {
+  position: relative;
 }
 
-/* Cacher texte quand sidebar réduite */
-.sidebar.collapsed .logo-text {
-    display: none;
+.search-input-box i {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: 0.85rem;
 }
 
-/* Sidebar menu */
-.sidebar ul {
-    list-style: none;
-    padding: 0;
+.search-input-box input {
+  background: #f1f5f9;
+  border: 1px solid transparent;
+  border-radius: 20px;
+  padding: 7px 14px 7px 34px;
+  font-size: 0.85rem;
+  outline: none;
+  width: 230px;
+  transition: all 0.2s ease;
 }
 
-.sidebar ul li {
-    padding: 12px 20px;
+.search-input-box input:focus {
+  background: #fff;
+  border-color: #93c5fd;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
 }
 
-.sidebar ul li a {
-    color: #f5f5f5;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    border-radius: 10px;
-    transition: background 0.2s;
+/* Boutons Pro & Actions */
+.btn-saas-add {
+  background-color: #2563eb;
+  color: #ffffff;
+  border: none;
+  font-size: 0.86rem;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(37, 99, 235, 0.2);
+  transition: all 0.15s ease;
 }
 
-.sidebar ul li a:hover {
-    background-color: #f5365c;
-    color: #fff;
+.btn-saas-add:hover {
+  background-color: #1d4ed8;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+  color: #fff;
 }
 
-.sidebar ul li a i {
-    min-width: 20px;
-    text-align: center;
+.avatar-badge {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #0f172a;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.78rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.sidebar ul li a span {
-    margin-left: 10px;
+/* Onglets Asana en Français */
+.asana-nav-tabs {
+  display: flex;
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-/* Cacher texte quand sidebar réduite */
-.sidebar.collapsed ul li a span {
-    display: none;
+.asana-nav-tabs li a {
+  display: inline-block;
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 0.88rem;
+  padding-bottom: 12px;
+  position: relative;
+  transition: color 0.15s;
 }
 
-/* Main panel */
-.main-panel {
-    margin-left: 220px;
-    padding: 20px;
-    transition: margin-left 0.3s;
+.asana-nav-tabs li a:hover,
+.asana-nav-tabs li a.active {
+  color: var(--text-main);
 }
 
-.main-panel.expanded {
-    margin-left: 60px;
+.asana-nav-tabs li a.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2.5px;
+  background-color: #2563eb;
+  border-radius: 2px;
 }
 
-/* Navbar */
-.navbar {
-    background-color: #1a1a2e;
-    padding: 15px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #2d2d44;
-    border-radius: 10px;
+.asana-main-content {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  background: var(--bg-workspace);
 }
 
-.navbar h4 {
-    color: #f5f5f5;
-    margin: 0;
+/* KANBAN BOARD */
+.board-container {
+  flex: 1;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 24px 28px;
+  display: flex;
+  gap: 24px;
 }
 
-/* Cartes */
-.card {
-    background-color: #1f1f2e;
-    border-radius: 15px;
-    padding: 20px;
-    margin-bottom: 25px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-    color: #f5f5f5;
-    transition: all 0.3s;
+.kanban-col {
+  width: 340px;
+  min-width: 340px;
+  display: flex;
+  flex-direction: column;
 }
 
-.card h5 {
-    color: #ff6f91;
+.kanban-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding: 0 4px;
 }
 
-.card p {
-    color: #ccc;
+.col-name {
+  font-size: 1.02rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-/* Statut des tâches */
-.task-validated {
-    opacity: 0.6;
-    text-decoration: line-through;
+.col-count {
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: #e2e8f0;
+  color: #334155;
+  padding: 3px 8px;
+  border-radius: 12px;
 }
 
-.task-pending {
-    border: 2px dashed #ffbc42;
+.cards-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  overflow-y: auto;
+  padding-right: 6px;
+  flex: 1;
 }
 
-/* Boutons */
-.btn-primary {
-    background-color: #f5365c;
-    color: #fff;
-    border: none;
-    border-radius: 12px;
+.asana-card {
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid var(--border-card);
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.btn-primary:hover {
-    background-color: #ff708f;
+.asana-card:hover {
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
+  transform: translateY(-2px);
 }
 
-.btn-danger {
-    background-color: #fb6340;
-    color: #fff;
-    border: none;
-    border-radius: 12px;
+.card-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
 }
 
-.btn-danger:hover {
-    background-color: #ff7a57;
+.circle-check {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: transparent;
+  text-decoration: none;
+  flex-shrink: 0;
+  margin-top: 1px;
+  transition: all 0.15s ease;
 }
 
-.btn-success {
-    background-color: #28a745;
-    color: #fff;
-    border: none;
-    border-radius: 12px;
+.circle-check:hover {
+  border-color: #10b981;
+  background-color: #ecfdf5;
+  color: #10b981;
 }
 
-.btn-success:hover {
-    background-color: #4cd964;
+.asana-card.is-done .circle-check {
+  background: #10b981;
+  border-color: #10b981;
+  color: #fff;
 }
 
-.btn-warning {
-    background-color: #ffc107;
-    color: #212529;
-    border: none;
-    border-radius: 12px;
+.asana-card.is-done .card-title {
+  text-decoration: line-through;
+  color: var(--text-muted);
 }
 
-.btn-warning:hover {
-    background-color: #ffd658;
+.card-title {
+  font-size: 0.94rem;
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.4;
+  color: var(--text-main);
+  flex: 1;
 }
 
-/* Formulaires */
-form input, form select {
-    border-radius: 10px;
-    border: none;
-    padding: 10px;
-    background-color: #1f1f2e;
-    color: #f5f5f5;
+.card-desc {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.45;
 }
 
-form input::placeholder {
-    color: #ccc;
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-    .sidebar {
-        width: 60px;
-    }
-    .main-panel {
-        margin-left: 60px;
-    }
+.tag-pill {
+  font-size: 0.74rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 12px;
+}
+
+.tag-pill.Haute { background-color: var(--p-high-bg); color: var(--p-high-text); }
+.tag-pill.Moyenne { background-color: var(--p-med-bg); color: var(--p-med-text); }
+.tag-pill.Faible { background-color: var(--p-low-bg); color: var(--p-low-text); }
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.footer-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  color: #475569;
+  font-weight: 500;
+}
+
+.user-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #cbd5e1;
+  color: #1e293b;
+  font-size: 0.65rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.btn-action-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  border: 1px solid transparent;
+  background: #f8fafc;
+  text-decoration: none;
+  font-size: 0.8rem;
+  transition: all 0.15s ease;
+}
+
+.btn-action-icon:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.btn-action-icon.danger:hover {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+/* ========================================================
+   DESIGN CALENDRIER FULLCALENDAR FIXÉ & VERROUILLÉ
+   ======================================================== */
+.calendar-wrapper {
+  flex: 1;
+  padding: 20px 28px;
+  background-color: var(--bg-workspace);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.calendar-card-container {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid var(--border-subtle);
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  flex: 1;
+}
+
+/* En-tête toolbar */
+.fc .fc-toolbar {
+  margin-bottom: 20px !important;
+  align-items: center;
+}
+
+.fc .fc-toolbar-title {
+  font-size: 1.25rem !important;
+  font-weight: 700 !important;
+  color: #0f172a !important;
+  letter-spacing: -0.02em;
+}
+
+/* Boutons SaaS épurés */
+.fc .fc-button {
+  background: #ffffff !important;
+  color: #334155 !important;
+  border: 1px solid #cbd5e1 !important;
+  font-size: 0.84rem !important;
+  font-weight: 600 !important;
+  padding: 7px 14px !important;
+  border-radius: 8px !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+  transition: all 0.15s ease !important;
+  text-transform: capitalize !important;
+}
+
+.fc .fc-button:hover {
+  background: #f8fafc !important;
+  color: #0f172a !important;
+  border-color: #94a3b8 !important;
+}
+
+.fc .fc-button-active,
+.fc .fc-button-primary:not(:disabled).fc-button-active {
+  background: #2563eb !important;
+  color: #ffffff !important;
+  border-color: #2563eb !important;
+}
+
+.fc .fc-button-group > .fc-button {
+  border-radius: 0 !important;
+  margin-left: -1px;
+}
+
+.fc .fc-button-group > .fc-button:first-child {
+  border-top-left-radius: 8px !important;
+  border-bottom-left-radius: 8px !important;
+  margin-left: 0;
+}
+
+.fc .fc-button-group > .fc-button:last-child {
+  border-top-right-radius: 8px !important;
+  border-bottom-right-radius: 8px !important;
+}
+
+.fc .fc-today-button {
+  margin-right: 12px !important;
+  border-radius: 8px !important;
+}
+
+/* --- FIX DE LA CASE "TOUTE LA JOURNÉE" & COLONNE AXE --- */
+/* 1. On force la largeur sur la table pour empêcher tout écrasement */
+.fc-timegrid table {
+  table-layout: fixed !important;
+}
+
+.fc .fc-timegrid-axis,
+.fc colgroup col.fc-timegrid-axis,
+.fc col.fc-timegrid-axis {
+  width: 130px !important;
+  min-width: 130px !important;
+  max-width: 130px !important;
+}
+
+/* 2. Le texte "Toute la journée" centré et non coupé */
+.fc .fc-timegrid-axis-cushion,
+.fc-timegrid-all-day .fc-timegrid-axis-frame,
+.fc .fc-timegrid-all-day-label {
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  color: #475569 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.04em !important;
+  white-space: normal !important;
+  text-align: center !important;
+  padding: 10px 4px !important;
+  line-height: 1.3 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* 3. Hauteur garantie et fond contrasté pour la case All-day même vide */
+.fc-timegrid-all-day {
+  background-color: #f1f5f9 !important;
+  border-bottom: 2px solid #cbd5e1 !important;
+}
+
+.fc-timegrid-all-day .fc-timegrid-col-frame {
+  min-height: 56px !important;
+  height: 56px !important;
+}
+
+.fc-timegrid-all-day .fc-timegrid-axis-frame {
+  min-height: 56px !important;
+  height: 56px !important;
+}
+
+/* En-tête des colonnes jours sans liens bleus */
+.fc .fc-col-header-cell {
+  background-color: #ffffff;
+  padding: 12px 0 !important;
+  border-color: #e2e8f0 !important;
+}
+
+.fc .fc-col-header-cell-cushion {
+  color: #0f172a !important;
+  text-decoration: none !important;
+  font-weight: 700 !important;
+  font-size: 0.88rem !important;
+  display: block;
+}
+
+.fc .fc-day-today {
+  background-color: #f0f7ff !important;
+}
+
+.fc .fc-day-today .fc-col-header-cell-cushion {
+  color: #2563eb !important;
+}
+
+.fc td, .fc th {
+  border-color: #f1f5f9 !important;
+}
+
+.fc-theme-standard td, .fc-theme-standard th {
+  border: 1px solid #e2e8f0;
+}
+
+/* Événements dans le calendrier */
+.fc-event {
+  white-space: normal !important;
+  line-height: 1.35 !important;
+  padding: 4px 8px !important;
+  border-radius: 6px !important;
+  font-size: 0.8rem !important;
+  font-weight: 600 !important;
+  cursor: pointer;
+  border: none !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+}
+
+.fc-event-title {
+  white-space: normal !important;
+  word-break: break-word !important;
+}
+
+.fc-daygrid-event-dot {
+  display: none !important;
+}
+
+/* TIMELINE */
+.timeline-container {
+  flex: 1;
+  padding: 24px;
+  overflow: auto;
+  background: #ffffff;
+}
+
+.timeline-row {
+  display: flex;
+  align-items: center;
+  height: 58px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.timeline-label {
+  width: 280px;
+  min-width: 280px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding-right: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.timeline-bar-wrapper {
+  flex: 1;
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.gantt-bar {
+  height: 32px;
+  border-radius: 8px;
+  color: white;
+  font-size: 0.78rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* WORKFLOW */
+.workflow-container {
+  flex: 1;
+  padding: 36px;
+  background: #f8fafc;
+  overflow-y: auto;
+}
+
+.workflow-card {
+  background: white;
+  border-radius: 14px;
+  border: 1px solid var(--border-card);
+  padding: 22px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  max-width: 780px;
+  margin: 0 auto 20px;
 }
